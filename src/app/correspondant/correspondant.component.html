@@ -1,0 +1,169 @@
+<div class="box">
+  <div class="box-header">
+    <h2 class="box-title">CORRESPONDANTS</h2>
+ 
+  <br>
+    <br>
+  <div><button class="btn btn-light" data-toggle="modal" data-target="#modal-add">Ajouter</button></div>
+</div>  <!-- /.box-header -->
+  <div class="box-body">
+    <table id="example2" class="table table-bordered table-hover">
+      <thead>
+        <tr>
+          <th>Code BIC</th>
+          <th>Désignation</th>
+          <th>Abréviation</th>
+          <th>Pays</th>
+          <th>Type Commission</th>
+          <th>Modifier/Supprimer</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let correspondant of correspondants ">
+          <td>{{correspondant.codeBIC}}</td>
+          <td>{{correspondant.designation}}</td>
+          <td>{{correspondant.abrv}}</td>
+          <td> {{correspondant.pays}}</td>
+          <td> {{correspondant.commission.comN}}</td>
+          <td>
+            <button type="button" class="btn btn-light ml-8px" data-toggle="modal" data-target="#modal-update"
+              (click)="getOne(correspondant)">
+              <i class="fa fa-edit"></i>
+            </button>
+            &nbsp;
+            <button class="btn btn-danger" data-toggle="modal" data-target="#modal-delete"
+              (click)="deleteC(correspondant)">
+              <i class="fa fa-trash"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <!-- /.box-body -->
+</div>
+
+<div class="modal fade" id="modal-add">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Ajouter un nouveau Correspondant</h4>
+      </div>
+      <div class="modal-body">
+        <form #correspondant_add_form="ngForm">
+          <div class="form-group">
+            <label for="name">Code BIC<span class="text-danger">*</span></label>
+            <input type="text" #codeBIC="ngModel" [(ngModel)]="correspondant.codeBIC" class="form-control"
+              [class.is-invalid]="codeBIC.touched && codeBIC.invalid" name="codeBIC" id="codeBIC"
+              placeholder="Entrer codeBIC" required="true">
+            <small class="text-danger" [class.d-none]="codeBIC.untouched || codeBIC.valid">codeBIC est
+              obligatoire</small>
+          </div>
+          <div class="form-group">
+            <label for="name">designation <span class="text-danger">*</span></label>
+            <input type="text" #designation="ngModel" [(ngModel)]="correspondant.designation" class="form-control"
+              [class.is-invalid]="designation.touched && designation.invalid" name="designation" id="designation"
+              placeholder="Entrer designation" required="true">
+            <small class="text-danger" [class.d-none]="designation.untouched || designation.valid">designation est
+              obligatoire</small>
+          </div>
+
+          <div class="form-group">
+            <label for="name">Abréviation <span class="text-danger">*</span></label>
+            <input type="text" #abrv="ngModel" [(ngModel)]="correspondant.abrv" name="abrv" class="form-control"
+              id="abrv" [class.is-invalid]="abrv.touched && abrv.invalid" placeholder="Entrer l'abrévation" required>
+            <small class="text-danger" [class.d-none]="abrv.untouched || abrv.valid">Abréviation</small>
+          </div>
+          <div class="form-group">
+            <label for="name">Pays <span class="text-danger">*</span></label>
+            <input type="text" #pays="ngModel" [(ngModel)]="correspondant.pays" name="pays" class="form-control"
+              id="pays" [class.is-invalid]="pays.touched && pays.invalid" placeholder="Entrer pays" required>
+            <small class="text-danger" [class.d-none]="pays.untouched || pays.valid">pays est obligatoire</small>
+          </div>
+          <div class="form-group">
+            <label for="name">Type de Commission <span class="text-danger">*</span></label>
+            <select #com="ngModel" [(ngModel)]="correspondant.com" name="com" class="form-control" id="com">
+              <option *ngFor="let comm of commissions " [value]="comm.comN">{{comm.comN}}</option>
+            </select>
+            <small class="text-danger" [class.d-none]="com.untouched || com.valid">La commission est obligatoire</small>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Annuler</button>
+            <button type="button" class="btn btn-primary" (click)="add_corr()" data-dismiss="modal"
+              [disabled]="!correspondant_add_form.form.valid">Ajouter Correspondant</button>
+          </div>
+        </form>
+
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+</div>
+
+
+<!--modal update-->
+<div class="modal fade" id="modal-update">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Modifier un Correspondant</h4>
+      </div>
+      <div class="modal-body">
+        <form #correspondant_update_form="ngForm">
+          <div class="form-group">
+            <label for="name">Code BIC<span class="text-danger">*</span></label>
+            <input type="text" #codeBIC="ngModel" [(ngModel)]="correspondant.codeBIC" class="form-control"
+              [class.is-invalid]="codeBIC.touched && codeBIC.invalid" name="codeBIC" id="codeBIC"
+              placeholder="Entrer codeBIC" required="true">
+            <small class="text-danger" [class.d-none]="codeBIC.untouched || codeBIC.valid">codeBIC est
+              obligatoire</small>
+          </div>
+          <div class="form-group">
+            <label for="name">designation <span class="text-danger">*</span></label>
+            <input type="text" #designation="ngModel" [(ngModel)]="correspondant.designation" class="form-control"
+              [class.is-invalid]="designation.touched && designation.invalid" name="designation" id="designation"
+              placeholder="Entrer designation" required="true">
+            <small class="text-danger" [class.d-none]="designation.untouched || designation.valid">designation est
+              obligatoire</small>
+          </div>
+
+          <div class="form-group">
+            <label for="name">Abréviation <span class="text-danger">*</span></label>
+            <input type="text" #abrv="ngModel" [(ngModel)]="correspondant.abrv" name="abrv" class="form-control"
+              id="abrv" [class.is-invalid]="abrv.touched && abrv.invalid" placeholder="Entrer Montant" required>
+            <small class="text-danger" [class.d-none]="abrv.untouched || abrv.valid">Abréviation</small>
+          </div>
+          <div class="form-group">
+            <label for="name">Pays <span class="text-danger">*</span></label>
+            <input type="text" #pays="ngModel" [(ngModel)]="correspondant.pays" name="pays" class="form-control"
+              id="pays" [class.is-invalid]="pays.touched && pays.invalid" placeholder="Entrer pays" required>
+            <small class="text-danger" [class.d-none]="pays.untouched || pays.valid">pays est obligatoire</small>
+          </div>
+          <div class="form-group">
+              <label for="name">Type de Commission <span class="text-danger">*</span></label>
+              <select #com [(ngModel)]="correspondant.com" name="com" class="form-control" id="com">
+                <option *ngFor="let comm of commissions " [value]="comm.id">{{comm.comN}}</option>
+              </select>
+              <small class="text-danger" [class.d-none]="com.untouched || com.valid">La commission est obligatoire</small>
+            </div>
+
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Annuler</button>
+            <button type="button" class="btn btn-primary" (click)="update_correspondant()" data-dismiss="modal"
+              [disabled]="!correspondant_update_form.form.valid">Modifier Correspondant</button>
+          </div>
+        </form>
+      </div>
+
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<notifier-container></notifier-container>

@@ -1,1 +1,34 @@
-/* You can add global styles to this file, and also import other style files */
+@import "~angular-notifier/styles.css";
+@import "../node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css";
+
+.loading {
+    z-index: 3;
+    padding-top: 22%;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(255, 255, 255);
+    background-color: rgba(255, 255, 255, 0.66);
+    text-align: center;
+    font-size: 30px;
+}
+
+.ml-8px {
+    margin-right: 8px;
+}
+
+.d-none {
+    display: none !important;
+}
+.is-invalid {
+    border-radius: 0;
+    box-shadow: none;
+    border-color: #a94442 !important;
+}
+.button{
+    float: right;
+    margin-right: 20px;
+}

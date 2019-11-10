@@ -1,0 +1,181 @@
+<div class="box">
+  <div class="box-header">
+    <h2 class="box-title">Fonds</h2>
+    <br>
+    <br>
+    <div><button class="btn btn-light" data-toggle="modal" data-target="#modal-add">Ajouter</button></div>
+  </div>
+</div>
+<!-- /.box-header -->
+<div class="box-body">
+  <table id="example2" class="table table-bordered table-hover">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Correspondant</th>
+        <th>Date de Récéption</th>
+        <th>Montant</th>
+        <th>Devise</th>
+        <th>Nombre de Bénéficiaires</th>
+        <th>Statut</th>
+        <th>Commentaire</th>
+        <th>Valider/Rejeter</th>
+        <th>Suivre Processus</th>
+      </tr>
+      <!--  *ngIf="fond.statut == 'Vérifié' || fond.statut =='Non Vérifié' || fond.statut == 'Reçu'" ligne 18 avant modif 15/9-->
+    </thead>
+    <tbody>
+      <tr *ngFor="let fond of fonds ">
+        <td>{{fond.id}}</td>
+        <td>{{fond.correspondant.designation}}</td>
+        <td>{{fond.dateRep}}</td>
+        <td> {{fond.montant}}</td>
+        <td> {{fond.devise}}</td>
+        <td> {{fond.nbrBeneficiaire}}</td>
+        <td><b>{{fond.statut}}</b></td>
+        <td> {{fond.commentaire}}</td>
+
+
+        <td>
+          <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#modal-update"
+            [disabled]="fond.statut=='Vérifié' || fond.statut=='Rejeté' || fond.statut=='Traité' || fond.statut=='En cours d\'éxecution' || fond.statut=='Exécuté'"
+            (click)="valider(fond)">
+            <i class="fa fa-check"></i>
+          </button>
+          &nbsp;
+          <button class="btn btn-danger" data-toggle="modal" data-target="#modal-comment" (click)="getOne(fond)"
+            [disabled]="fond.statut=='Vérifié' || fond.statut=='Rejeté' || fond.statut=='Traité' || fond.statut=='En cours d\'éxecution' || fond.statut=='Exécuté'  "
+            (click)="rejeter(fond)">
+            <i class="fa fa-close"></i>
+
+
+
+          </button>
+        </td>
+        <td><button class="btn btn-outline-dark" [disabled]="fond.statut =='Reçu' || fond.statut =='Rejeté'"
+            (click)="suivie(fond)">
+            <i class="fa fa-external-link"></i></button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<!-- /.box-body -->
+
+
+<div class="modal fade" id="modal-comment">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Ajouter un Commentaire</h4>
+      </div>
+      <div class="modal-body">
+        <form #fonds_update_form="ngForm">
+          <div class="form-group">
+            <label for="name">Votre Commentaire<span class="text-danger">*</span></label>
+            <input type="text" #commentaire="ngModel" [(ngModel)]="fond.commentaire" class="form-control"
+              [class.is-invalid]="commentaire.touched && commentaire.invalid" name="commentaire" id="commentaire"
+              required="true">
+            <small class="text-danger" [class.d-none]="commentaire.untouched || commentaire.valid">Commentaire
+              obligatoire</small>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Annuler</button>
+            <button type="button" class="btn btn-primary" (click)="updateFonds()" data-dismiss="modal"
+              [disabled]="!fonds_update_form.form.valid">Ajouter Commentaire</button>
+          </div>
+        </form>
+      </div>
+
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<div class="modal fade" id="modal-add">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Ajouter un Fonds</h4>
+      </div>
+      <div class="modal-body">
+        <form #fonds_add_form="ngForm" id="fonds_add_form">
+          <div class="form-group">
+            <label for="name">Commantaire<span class="text-danger">*</span></label>
+            <input type="text" #commentaire="ngModel" [(ngModel)]="fond.commentaire" class="form-control"
+              [class.is-invalid]="commentaire.touched && commentaire.invalid" id="commentaire" name="commentaire"
+              commentaire="commentaire" placeholder="Entrer commentaire" required="true">
+            <small class="text-danger" [class.d-none]="commentaire.untouched || commentaire.valid">Commentaire 
+              obligatoire</small>
+          </div>
+          <div class="form-group">
+            <label for="name">Date de Récéption<span class="text-danger">*</span></label>
+            <input type="date" #dateRep="ngModel" [(ngModel)]="fond.dateRep " class="form-control"
+              [class.is-invalid]="dateRep .touched && dateRep .invalid" name="dateRep " id="dateRep "
+              placeholder="Entrer dateRep " required="true" (blur)="compareTwoDates(dateRep)">
+            <small class="text-danger" [class.d-none]="dateRep .untouched || dateRep .valid  "  >Date de Repcéption 
+              obligatoire</small>
+              <small class="text-danger" *ngIf="error" >
+                {{ errorMsg }}
+              </small>
+          </div>
+
+          <div class="form-group">
+            <label for="name">Devise<span class="text-danger">*</span></label>
+            <select #devise="ngModel" [(ngModel)]="fond.devise" name="devise" class="form-control" id="devise" required>
+              <option [value]="'euro'">Euro</option>
+              <option [value]="'dollar'">Dollar</option>
+              <option [value]="'dinar-tunisien'">Dinar Tunisien</option>
+              <option [value]="'ringgit-malais'" selected>Ringgit malais</option>
+            </select> <small class="text-danger" [class.d-none]="devise.untouched || devise.valid">Choix Devise oblligatoire</small>
+          </div>
+          <div class="form-group">
+            <label for="name">Montant<span class="text-danger">*</span></label>
+            <input type="number" #montant="ngModel" [(ngModel)]="fond.montant" name="montant" class="form-control"
+              id="montant" [class.is-invalid]="montant.touched && montant.invalid" placeholder="Entrer montant"
+              required (blur)="checkM(montant)">
+            <small class="text-danger" [class.d-none]="montant.untouched || montant.valid">montant 
+              obligatoire</small>
+              <small class="text-danger" *ngIf="error1" >
+                {{ errorMsgM }}
+              </small>
+          </div>
+          <div class="form-group">
+            <label for="name">Nombre de Bénéficiaires<span class="text-danger">*</span></label>
+            <input type="number" #nbrBeneficiaire="ngModel" [(ngModel)]="fond.nbrBeneficiaire" name="nbrBeneficiaire"
+              class="form-control" id="nbrBeneficiaire"
+              [class.is-invalid]="nbrBeneficiaire.touched && nbrBeneficiaire.invalid"
+              placeholder="Entrer nbrBeneficiaire" required (blur)="checkB(nbrBeneficiaire)">
+            <small class="text-danger" [class.d-none]="nbrBeneficiaire.untouched || nbrBeneficiaire.valid">nombre de
+              Beneficiaire est obligatoire</small>
+              <small class="text-danger" *ngIf="error2" >
+                {{ errorMsgB }}
+              </small>
+          </div>
+     
+          <div class="form-group">
+            <label for="name">Correspondant<span class="text-danger">*</span></label>
+            <select #correspondant="ngModel" [(ngModel)]="fond.correspondant" name="correspondant"
+              class="form-control" id="correspondant" required>
+              <option *ngFor="let correspondant of correspondants " [value]="correspondant.pk">{{correspondant.designation}}
+              </option>
+            </select>
+            <small class="text-danger" [class.d-none]="correspondant.untouched || correspondant.valid">Le correspondant
+              est obligatoire</small>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Annuler</button>
+            <button type="button" class="btn btn-primary" (click)="addF()" data-dismiss="modal"
+              [disabled]="!fonds_add_form.form.valid || error || error1 || error2">Ajouter un fonds</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  </div>
+

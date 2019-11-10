@@ -1,0 +1,66 @@
+
+<div class="box">
+    <div class="box-header">
+      <h2 class="box-title">Bénéficiaire</h2> &nbsp;
+      <i class="fa fa-arrow-left"  (click)="returnToFonds()" aria-hidden="true"></i>
+  
+    </div>
+    <br>  
+    <br>
+    <!-- /.box-header -->
+    <mat-form-field>
+        <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Chercher">
+      </mat-form-field>
+<table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+
+  <!-- Position Column -->
+  <ng-container matColumnDef="idP">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header><h5><b>ID-Pensionnaire</b></h5> </th>
+    <td mat-cell *matCellDef="let element"> {{element.idP}} </td>
+  </ng-container>
+
+  <!-- Name Column -->
+  <ng-container matColumnDef="nom">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> <h5><b>Nom</b></h5> </th>
+    <td mat-cell *matCellDef="let element"> {{element.pensionnaire.nom}} </td>
+  </ng-container>
+
+  <!-- Weight Column -->
+  <ng-container matColumnDef="prenom">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header><h5><b>Prenom</b></h5> </th>
+    <td mat-cell *matCellDef="let element"> {{element.pensionnaire.prenom}} </td>
+  </ng-container>
+
+  <!-- Symbol Column -->
+  <ng-container matColumnDef="montantP">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header><h5><b> Montant</b></h5></th>
+    <td mat-cell *matCellDef="let element"> {{element.montantP}} </td>
+  </ng-container>
+  <ng-container matColumnDef="commission">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> <h5><b>Commission</b></h5> </th>
+      <td mat-cell *matCellDef="let element"> {{element.commission}} </td>
+    </ng-container>
+    <ng-container matColumnDef="mntNet">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header><h5><b> Montant Net</b></h5> </th>
+        <td mat-cell *matCellDef="let element"> {{element.mntNet}} </td>
+      </ng-container>
+      <ng-container matColumnDef="mntDinar">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header><h5><b> Montant en Dinar Tunisien </b></h5></th>
+          <td mat-cell *matCellDef="let element">           <div *ngIf="element.mntDinar==0">Montant n'est pas disponible <br> en Dinar Tunisien</div>
+          {{element.mntDinar}} </td>
+        </ng-container>
+        <ng-container matColumnDef="statut">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> <h5><b>Etat </b></h5></th>
+            <td mat-cell *matCellDef="let element"> {{element.statut}} </td>
+          </ng-container>
+          <ng-container matColumnDef="imprimer">
+            
+              <th mat-header-cell  *matHeaderCellDef > <h5><b>imprimer</b></h5></th>
+              <td mat-cell *matCellDef> <button><i class="fa fa-print"></i></button>    </td>
+            </ng-container>
+           
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
+
+

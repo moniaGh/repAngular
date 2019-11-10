@@ -1,0 +1,141 @@
+<div class="box">
+  <div class="box-header">
+    <h2 class="box-title">Commission</h2>
+    <br>
+    <br>
+  <div><button class="btn btn-light"  data-toggle="modal" data-target="#modal-add">Ajouter</button></div>
+  </div>
+  <!-- /.box-header -->
+  <div class="box-body">
+    <table id="example2" class="table table-bordered table-hover">
+      <thead>
+        <tr>
+          <th>Id</th>
+          <th>Libellé</th>
+          <th>Taux</th>
+          <th>Commission Max</th>
+          <th>Commission Min</th>
+          <th>Modifier/Supprimer</th>
+      </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let com of commissions ">
+          <td>{{com.id}}</td>
+          <td>{{com.comN}}</td>
+          <td>{{com.taux}}</td>
+         <td> {{com.comMax}}</td>
+         <td> {{com.comMin}}</td>
+
+          <td>
+            <a type="button" class="btn btn-outline-light" data-toggle="modal" data-target="#modal-update" (click)="getOne(com)">
+             <i class="fa fa-edit fa-2x"></i>
+            </a>
+           
+                        <a class="btn btn-outline-light" data-toggle="modal" data-target="#modal-delete" (click)="deleteC(com)">
+             <i class="fa fa-trash fa-2x" color="#bd081c"></i>
+                        </a>    
+           </td>
+          </tr>
+      </tbody>
+    </table>
+  </div>
+  <!-- /.box-body -->
+</div>
+
+<div class="modal fade" id="modal-add">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Ajouter une Commission</h4>
+      </div>
+      <div class="modal-body">
+        <form #commission_add_form="ngForm">
+          <div class="form-group">
+            <label for="name">Libellé<span class="text-danger">*</span></label>
+            <input type="text" #comN="ngModel" [(ngModel)]="commission.comN" class="form-control" [class.is-invalid]="comN.touched && comN.invalid" id="comN" name="comN" comN="comN"  placeholder="Entrer comN" required="true">
+            <small class="text-danger" [class.d-none]="comN.untouched || comN.valid">comN est obligatoire</small>
+          </div>
+          <div class="form-group">
+            <label for="name">Taux <span class="text-danger">*</span></label>
+            <input type="number" #taux="ngModel" [(ngModel)]="commission.taux" class="form-control" [class.is-invalid]="taux.touched && taux.invalid" name="taux" id="taux"  placeholder="Entrer taux" required="true">
+            <small class="text-danger" [class.d-none]="taux.untouched || taux.valid">taux  est obligatoire</small>
+          </div>
+  
+          <div class="form-group">
+              <label for="name">Commission Max <span class="text-danger">*</span></label>
+              <input type="number" #comMax="ngModel" [(ngModel)]="commission.comMax" name="comMax"  class="form-control" id="comMax" [class.is-invalid]="comMax.touched && comMax.invalid"   placeholder="Entrer Montant" required>
+              <small class="text-danger" [class.d-none]="comMax.untouched || comMax.valid">Abréviation</small>
+            </div>
+            <div class="form-group">
+              <label for="name">Commission Min<span class="text-danger">*</span></label>
+              <input type="number" #comMin="ngModel" [(ngModel)]="commission.comMin" name="comMin"  class="form-control" id="comMin" [class.is-invalid]="comMin.touched && comMin.invalid"   placeholder="Entrer comMin" required >
+              <small class="text-danger" [class.d-none]="comMin.untouched || comMin.valid">comMin est obligatoire</small>
+            </div>
+          
+  
+        
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Annuler</button>
+            <button type="button" class="btn btn-primary" (click)="addC()" data-dismiss="modal" [disabled]="!commission_add_form.form.valid" >Ajouter Commission</button>
+          </div>
+        </form>
+      </div>
+
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+
+
+<!--modal update-->
+
+<div class="modal fade" id="modal-update">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Modifier une Commission</h4>
+      </div>
+      <div class="modal-body">
+        <form #commission_update_form="ngForm">
+          <div class="form-group">
+            <label for="name">Libellé<span class="text-danger">*</span></label>
+            <input type="text" #comN="ngModel" [(ngModel)]="commission.comN" class="form-control" [class.is-invalidcomN]="comN.touched && comN.invalid" name="comN" comN="comN"  placeholder="Entrer comN" required="true">
+            <small class="text-danger" [class.d-none]="comN.untouched || comN.valid">comN est obligatoire</small>
+          </div>
+          <div class="form-group">
+            <label for="name">Taux <span class="text-danger">*</span></label>
+            <input type="number" #taux="ngModel" [(ngModel)]="commission.taux" class="form-control" [class.is-invalid]="taux.touched && taux.invalid" name="taux" id="taux"  placeholder="Entrer taux" required="true">
+            <small class="text-danger" [class.d-none]="taux.untouched || taux.valid">taux  est obligatoire</small>
+          </div>
+  
+          <div class="form-group">
+              <label for="name">Commission Max <span class="text-danger">*</span></label>
+              <input type="number" #comMax="ngModel" [(ngModel)]="commission.comMax" name="comMax"  class="form-control" id="comMax" [class.is-invalid]="comMax.touched && comMax.invalid"   placeholder="Entrer Montant" required>
+              <small class="text-danger" [class.d-none]="comMax.untouched || comMax.valid">Abréviation</small>
+            </div>
+            <div class="form-group">
+              <label for="name">Commission Min<span class="text-danger">*</span></label>
+              <input type="number" #comMin="ngModel" [(ngModel)]="commission.comMin" name="comMin"  class="form-control" id="comMin" [class.is-invalid]="comMin.touched && comMin.invalid"   placeholder="Entrer comMin" required >
+              <small class="text-danger" [class.d-none]="comMin.untouched || comMin.valid">comMin est obligatoire</small>
+            </div>
+          
+  
+        
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Annuler</button>
+            <button type="button" class="btn btn-primary" (click)="updateC()" data-dismiss="modal" [disabled]="!commission_update_form.form.valid" >Modifier Commission</button>
+          </div>
+        </form>
+      </div>
+
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<notifier-container></notifier-container>

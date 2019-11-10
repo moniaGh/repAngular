@@ -1,0 +1,192 @@
+<div class="box">
+  <div class="box-header">
+    <h2 class="box-title">Pensionnaires</h2>
+    <br>
+    <br>
+    <div><button class="btn btn-light" data-toggle="modal" data-target="#modal-add">Ajouter</button></div>
+
+  </div>
+  <!-- /.box-header -->
+  <div class="box-body">
+    <table id="example2" class="table table-bordered table-hover">
+      <thead>
+        <tr>
+          <th>ID-Pensionnaire</th>
+          <th>Nom</th>
+          <th>Prénom</th>
+          <th>Salaire</th>
+          <th>N° RIB</th>
+        <th>N° Securité Sociale</th> 
+        <th>Type Commission</th>
+
+        <th>Etat</th>
+          <th>Modifier/Supprimer</th>
+      </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let pen of pensionnaires  ">
+          <td>{{pen.idP}}</td>
+          <td>{{pen.nom }}</td>
+          <td>{{pen.prenom}}</td>
+          <td>{{pen.salaire}}</td>
+          <td>{{pen.numRib}}</td>
+          <td>{{pen.secSoc}}</td>
+          <td><div *ngIf="pen.comCor">Commission Correspondant<br></div> <div *ngIf="pen.comIn">Commission Interne</div>
+          <div *ngIf="!pen.comCor && !pen.comIn">Neants </div></td>
+          <td>{{pen.statutP}}</td>
+
+
+
+
+
+      
+          <td>
+            <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#modal-update" (click)="getOne(pen)">
+             <i class="fa fa-edit"></i>
+           </button>
+           &nbsp;
+                        <button class="btn btn-danger"  (click)="deleteP(pen)">
+             <i class="fa fa-trash"></i>
+             </button>    
+           </td>
+          </tr>
+      </tbody>
+    </table>
+  </div>
+  <!-- /.box-body -->
+</div>
+
+<div class="modal fade" id="modal-add">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Ajouter un Pensionnaire</h4>
+      </div>
+      <div class="modal-body">
+        <form #pensionnaire_add_form="ngForm">
+            <div class="form-group">
+                <label for="name">ID<span class="text-danger">*</span></label>
+                <input type="text" #idP="ngModel" [(ngModel)]="pensionnaire.idP" class="form-control" [class.is-invalid]="idP.touched && idP.invalid" name="idP" id="idP"  placeholder="Entrer idP" required="true">
+                <small class="text-danger" [class.d-none]="idP.untouched || idP.valid">idP est obligatoire</small>
+              </div>
+          <div class="form-group">
+            <label for="name">Nom<span class="text-danger">*</span></label>
+            <input type="text" #nom="ngModel" [(ngModel)]="pensionnaire.nom" class="form-control" [class.is-invalid]="nom.touched && nom.invalid" name="nom" id="nom"  placeholder="Entrer nom" required="true">
+            <small class="text-danger" [class.d-none]="nom.untouched || nom.valid">Nom est obligatoire</small>
+          </div>
+          <div class="form-group">
+            <label for="name">Prénom <span class="text-danger">*</span></label>
+            <input type="text" #prenom="ngModel" [(ngModel)]="pensionnaire.prenom" class="form-control" [class.is-invalid]="prenom.touched && prenom.invalid" name="prenom" id="prenom"  placeholder="Entrer prenom" required="true">
+            <small class="text-danger" [class.d-none]="prenom.untouched || prenom.valid">Prenom  est obligatoire</small>
+          </div>
+  
+          <div class="form-group">
+              <label for="name">Salaire<span class="text-danger">*</span></label>
+              <input type="number" #salaire="ngModel" [(ngModel)]="pensionnaire.salaire" name="salaire"  class="form-control" id="salaire" [class.is-invalid]="salaire.touched && salaire.invalid"   placeholder="Entrer Montant" required>
+              <small class="text-danger" [class.d-none]="salaire.untouched || salaire.valid">Salaire</small>
+            </div>
+            <div class="form-group">
+              <label for="name">N° RIB <span class="text-danger">*</span></label>
+              <input type="text" #numRib="ngModel" [(ngModel)]="pensionnaire.numRib" name="numRib"  class="form-control" id="numRib" [class.is-invalid]="numRib.touched && numRib.invalid"   placeholder="Entrer numRib" required >
+              <small class="text-danger" [class.d-none]="numRib.untouched || numRib.valid">numRib est obligatoire</small>
+            </div>
+          
+            <div class="form-group">
+              <label for="name">N° Sécurité Sociale <span class="text-danger">*</span></label>
+              <input type="text" #secSoc="ngModel" [(ngModel)]="pensionnaire.secSoc" name="secSoc"  class="form-control" id="secSoc" [class.is-invalid]="secSoc.touched && secSoc.invalid"   placeholder="Entrer secSoc" required >
+              <small class="text-danger" [class.d-none]="secSoc.untouched || secSoc.valid">Sécurité Sociale est obligatoire</small>
+            </div>
+           
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox"  #comCor="ngModel" [(ngModel)]="pensionnaire.comCor" (change)="toggleVisibility($event)" value="1" id="comCor">
+                <label class="form-check-label" for="comCor">
+                   Commission Correspondant 
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" #comIn="ngModel" [(ngModel)]="pensionnaire.comIn" (change)="toggleVisibility1($event)"  value="1" id="comIn" >
+                <label class="form-check-label" for="comIn">
+                   Commission Interne
+                </label>
+              </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Annuler</button>
+            <button type="button" class="btn btn-primary" (click)="add_pen()" data-dismiss="modal" [disabled]="!pensionnaire_add_form.form.valid" >Ajouter pensionnaire</button>
+          </div>
+        </form>
+      </div>
+
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+
+
+<!--modal update-->
+
+<div class="modal fade" id="modal-update">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Modifier un Pensionnaire</h4>
+      </div>
+      <div class="modal-body">
+        <form #pensionnaire_update_form="ngForm">
+          <div class="form-group">
+            <label for="name">Nom<span class="text-danger">*</span></label>
+            <input type="text" #nom="ngModel" [(ngModel)]="pensionnaire.nom" class="form-control" [class.is-invalid]="nom.touched && nom.invalid" name="nom" id="nom"  placeholder="Entrer nom" required="true">
+            <small class="text-danger" [class.d-none]="nom.untouched || nom.valid">Nom est obligatoire</small>
+          </div>
+          <div class="form-group">
+            <label for="name">Prénom <span class="text-danger">*</span></label>
+            <input type="text" #prenom="ngModel" [(ngModel)]="pensionnaire.prenom" class="form-control" [class.is-invalid]="prenom.touched && prenom.invalid" name="prenom" id="prenom"  placeholder="Entrer prenom" required="true">
+            <small class="text-danger" [class.d-none]="prenom.untouched || prenom.valid">Prenom  est obligatoire</small>
+          </div>
+  
+          <div class="form-group">
+              <label for="name">Salaire<span class="text-danger">*</span></label>
+              <input type="number" #salaire="ngModel" [(ngModel)]="pensionnaire.salaire" name="salaire"  class="form-control" id="salaire" [class.is-invalid]="salaire.touched && salaire.invalid"   placeholder="Entrer Montant" required>
+              <small class="text-danger" [class.d-none]="salaire.untouched || salaire.valid">Salaire</small>
+            </div>
+            <div class="form-group">
+              <label for="name">N° RIB <span class="text-danger">*</span></label>
+              <input type="text" #numRib="ngModel" [(ngModel)]="pensionnaire.numRib" name="numRib"  class="form-control" id="numRib" [class.is-invalid]="numRib.touched && numRib.invalid"   placeholder="Entrer numRib" required >
+              <small class="text-danger" [class.d-none]="numRib.untouched || numRib.valid">numRib est obligatoire</small>
+            </div>
+          
+            <div class="form-group">
+              <label for="name">N° Sécurité Sociale <span class="text-danger">*</span></label>
+              <input type="text" #secSoc="ngModel" [(ngModel)]="pensionnaire.secSoc" name="secSoc"  class="form-control" id="secSoc" [class.is-invalid]="secSoc.touched && secSoc.invalid"   placeholder="Entrer secSoc" required >
+              <small class="text-danger" [class.d-none]="secSoc.untouched || secSoc.valid">Sécurité Sociale est obligatoire</small>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox"  #comCor="ngModel" [(ngModel)]="pensionnaire.comCor" (change)="toggleVisibility($event)" value="1" id="comCor">
+                <label class="form-check-label" for="comCor">
+                   Commission Correspondant 
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" #comIn="ngModel" [(ngModel)]="pensionnaire.comIn" (change)="toggleVisibility1($event)"  value="1" id="comIn" >
+                <label class="form-check-label" for="comIn">
+                   Commission Interne 
+                </label>
+              </div>
+          
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Annuler</button>
+            <button type="button" class="btn btn-dark" (click)="updateP()" data-dismiss="modal" [disabled]="!pensionnaire_add_form.form.valid" >Modifier pensionnaire</button>
+          </div>
+        </form>
+      </div>
+
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<notifier-container></notifier-container>

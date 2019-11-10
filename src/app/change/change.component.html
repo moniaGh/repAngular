@@ -1,0 +1,32 @@
+<div class="box">
+  <div class="box-header">
+    <h2 class="box-title">Changes</h2>
+    
+  </div>
+  <!-- /.box-header -->
+  <div class="box-body">
+    <table id="example2" class="table table-bordered table-hover">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Devise</th>
+          <th>Cours D'Achat</th>
+          <th>Cours De Vente</th>
+         
+      </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let change of changes ">
+          <td>{{change.date}}</td>
+          <td>{{change.devise}}</td>
+          <td>{{change.coursAchat}}</td>
+          <td>{{change.coursVente}}</td>
+        
+
+        
+          </tr>
+      </tbody>
+    </table>
+  </div>
+  <!-- /.box-body -->
+</div>

@@ -1,0 +1,66 @@
+.btn-circle.btn-xl {
+    width: 70px;
+    height: 70px;
+    padding: 10px 16px;
+    border-radius: 35px;
+    font-size: 24px;
+    line-height: 1.33;
+}
+
+.btn-circle {
+    width: 35px;
+    height: 35px;
+    padding: 6px 0px;
+    border-radius: 15px;
+    text-align: center;
+    font-size: 12px;
+    line-height: 1.42857;
+}
+
+/* delete button */
+.delete {
+	width: 35px;
+	height: 35px;
+	
+	background: #B22222;
+	border-radius: 50%;
+	color: #fff;
+	cursor: pointer;
+}
+
+.update {
+	width: 35px;
+	height: 35px;
+	
+	background: #F38C24;
+	border-radius: 50%;
+	color: #fff;
+	cursor: pointer;
+}
+
+
+
+.addButton 
+{
+  position: relative;
+  border-width: 2px;
+  border-style: solid;
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: 0.3s all;
+ 
+    content: "";
+    position: absolute;
+    height: 4px;
+    width: 4px;
+    border-bottom-width: 2px;
+    border-bottom-style: solid;
+    border-left-width: 2px;
+    border-left-style: solid;
+    left: 9px;
+    top: 5px;
+ 
+
+}

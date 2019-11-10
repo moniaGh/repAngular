@@ -1,21 +1,129 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
-  <h1>
-    Welcome to {{ title }}!
-  </h1>
-  <img width="300" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
-</div>
-<h2>Here are some links to help you start: </h2>
-<ul>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/tutorial">Tour of Heroes</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/cli">CLI Documentation</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://blog.angular.io/">Angular blog</a></h2>
-  </li>
-</ul>
+<div class="wrapper">
+    <header class="main-header" style="">
+       <!-- Logo -->
+       <a href="/" class="logo">
+          <!-- mini logo for sidebar mini 50x50 pixels -->
+          <span class="logo-mini"><b>BFI</b></span>
+          <!-- logo for regular state and mobile devices -->
+          <span class="logo-lg"><b>Pension De</b> Retraite</span>
+       </a>
+       <!-- Header Navbar: style can be found in header.less -->
+       <nav class="navbar navbar-assets-top">
+          <!-- Sidebar toggle button-->
+          <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          </a>
+          <div class="navbar-custom-menu">
+             <ul class="nav navbar-nav">
+                <!-- Messages: style can be found in dropdown.less-->
+               
+                <!-- Notifications: style can be found in dropdown.less -->
+                <li class="dropdown notifications-menu">
+                   <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                   <i class="fa fa-bell-o"></i>
+                   <span class="badge" class="label label-danger" *ngIf="numberofNot>0">{{numberofNot}}</span>
+                   <div class="hidden-xs">
+                   </div>
+                   </a>
+                   <ul class="dropdown-menu" *ngIf="numberofNot>0">
+                     <!-- User image -->
+                     <li >
+                        <p>
+                          
+                           <small><h3><a (click)="goNot(fond)">{{numberofNot}} nouveau(x) Fonds !</a></h3></small>
+                        </p>
+                     </li>
+                     <!-- Menu Footer-->
+                    
+                  </ul>
+                
+                </li>
+                <!-- Tasks: style can be found in dropdown.less -->
+              
+                      
+                <!-- User Account: style can be found in dropdown.less -->
+                <li class="dropdown user user-menu">
+                   <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                   <img src="assets/user.png" class="user-image" alt="User Image">
+                   </a>
+                   <ul class="dropdown-menu">
+                      <!-- User image -->
+                      <li class="user-header">
+                         <img src="assets/user.png" class="img-circle" alt="User Image">
+                         <p>
+                            BFI
+                            <small>Futur ENGINEER </small>
+                         </p>
+                      </li>
+                      <!-- Menu Footer-->
+                      <li class="user-footer">
+                         <a href="#" class="btn btn-default btn-flat">Déconnexion</a>
+                      </li>
+                   </ul>
+                </li>
+                <!-- Control Sidebar Toggle Button -->
+               <!-- <li>
+                  <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
+               </li>-->
+             </ul>
+          </div>
+       </nav>
+    </header>
+    <!-- Left side column. contains the logo and sidebar -->
+    <aside class="main-sidebar">
+       <!-- sidebar: style can be found in sidebar.less -->
+       <section class="sidebar">
+          <!-- Sidebar user panel -->
+          <br>
+          <div class="user-panel">
+             <div class="pull-left image">
+                <img src="assets/user.png" class="img-circle" alt="User Image">
+             </div>
+             <div class="pull-left info">
+                <p>BFI Groupe</p>
+                <a><i class="fa fa-circle text-success"></i>En Ligne</a>
+             </div>
+          </div>
+          <br>
+          <!-- sidebar menu: : style can be found in sidebar.less -->
+          <ul class="sidebar-menu" data-widget="tree">
+             <li class="header">STATISTIQUES</li>
+             <li>
+                <a (click)="goToStat()">
+                <i class="fa fa-dashboard" (click)="goToStat()"></i> <span>Tableau de bord</span>
+                </a>
+             </li>
+             <li class="header">PARAMÉTRAGE</li>
+             <li><a (click)="goToComPage()"><i class="fa fa-money"></i>Commissions</a></li>
+            <li><a (click)="goToChangePage()"><i class="fa fa-line-chart"></i>Taux de Change</a></li>
+            <li><a (click)="goToPenPage()"><i class="fa fa-user"></i> Pensionnaires</a></li>
+            <li><a (click)="goToCorresPage()"><i class="fa fa-bank"></i> Correspondants</a></li>
+             <li class="header">GESTION</li>
+           
+             <li><a (click)="goToFondsPage()"><i class="fa fa-circle-o text-yellow"></i>Fonds</a></li>
+     
 
-<router-outlet></router-outlet>
+
+             
+            </ul> -
+       </section>
+       <!-- /.sidebar -->
+    </aside>
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+       <!-- Content Header (Page header) -->
+  
+       <!-- data Model for error messages -->
+       
+       <!-- Main content -->
+       <section class="content">
+          <router-outlet></router-outlet>
+          <!-- /.box-body -->
+    <!-- end tmp -->
+    </section>
+    <!-- /.content -->
+    </div>
+  </div>

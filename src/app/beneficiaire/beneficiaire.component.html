@@ -1,0 +1,218 @@
+<div class="box">
+  <div class="box-header">
+    <h2 class="box-title">Fonds</h2> &nbsp;
+    <i class="fa fa-arrow-left"  (click)="returnToFonds()" aria-hidden="true"></i>
+    <h3 class="box-title">Bénéficiaires</h3> &nbsp;
+
+  </div>
+  <br>  
+  <br>
+
+<div class="row">
+      <div class="col-sm-4"></div>
+      <div class="col-sm-4" >
+          <div class="alert alert-danger alert-dismissible" *ngIf="gCon" >
+          <!--     <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>-->
+              <strong>Anomalie !</strong> Vérifier la Somme des Montants par rapport aux nombres des bénéficiares
+            </div>    
+            <div class="alert alert-danger alert-dismissible" *ngIf="changeOfDay" >
+              <!--     <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>-->
+                  <strong>Anomalie !</strong>Taux de change pour ({{fonds.devise}}) d'aujourd'hui n'est pas disponible
+                </div>       
+                <div class="col-sm-4"></div>   
+            <div class="col-sm-4"></div>
+          </div>    
+          
+          
+           
+</div>
+          <div class="row"> 
+              <div class="col-sm-1" ></div>
+
+              <div class="col-sm-4">
+  <div class="btn btn-outline-dark"><h4>Montant Restant : </h4><span class="badge">{{montant}}</span></div>
+</div>
+<div class="col-sm-4"></div>
+<div class="col-sm-2">
+
+  <div type="button" class="btn btn-outline-dark"><h4>Nombre de Bénéficiaires </h4><span class="badge">{{nbrR}}/{{nbrB}}</span></div>
+</div>
+<div class="col-sm-1" ></div>
+
+</div>
+<div class="col-sm-6">
+<progress-bar [progress]="progressMoney" *ngIf="progressMoney>0" [color]="'#ff7448'">
+</progress-bar></div>
+<div class="col-sm-6">
+
+  <progress-bar [progress]="progressm" *ngIf="progressm>0" [color]="'#ff7448'">
+  </progress-bar>
+</div>
+  <!-- /.box-header -->
+  <div class="box-body">
+      <form *ngIf="nbrR != nbrB">
+          <div class="form-row">
+              <div class="form-group col-md-4">
+                <label for="inputEmail4">ID-Pensionnaire</label>
+                <input class="form-control"  type="text"  #pensionnaireIdp="ngModel"   name="pensionnaireIdp" [(ngModel)]="beneficiaire.pensionnaireIdp" list="languages" placeholder="Id" required="true">
+                <datalist   id="languages">
+                    <option *ngFor="let pen of pensionnairesDataList" value="{{pen.idP}}">
+                 
+                  </datalist>
+              </div>
+              <div class="form-group col-md-4">
+                <label for="inputPassword4">Montant</label>
+                <input  class="form-control" type="number" #montantP="ngModel" [(ngModel)]="beneficiaire.montantP" name="montantP">
+              </div>
+              <div class="form-group col-md-4">
+                  <label for="inputPassword4"> </label>
+                  <br>
+                  <button class="btn-circle.btn-xl btn-circle"  [disabled]="forbidden" (click)="add_bnf()">
+                  <i class="fa fa-plus-circle"></i>
+                  </button>
+                  
+ </div>
+
+
+            </div>
+          </form>
+    <table id="example2" class="table table-bordered table-hover">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>ID-P</th>
+          <th>Nom</th>
+          <th>Prénom</th>
+          <th>Montant</th>
+          <th>Commission Corresppondant</th>
+          <th>Commission Interne</th>
+
+          <th>Montant NET </th>
+          <th>Montant En DINAR</th>
+          <th>Etat</th>
+          <th *ngIf="closed">Modifier/Supprimer</th>
+
+      </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let benf of beneficiaires ;let i = index">
+          <td>{{benf.idB}}</td>
+          <td>{{benf.pensionnaire.idP}}</td>
+          <td>{{benf.pensionnaire.nom}}</td>
+          <td>{{benf.pensionnaire.prenom}}</td>
+          <td>{{benf.montantP}}</td>
+          <td>{{benf.commissionC}}</td>
+          <td>{{benf.commissionI}}</td>
+
+          <td>{{benf.mntNet}}</td>
+          <td><div *ngIf="benf.mntDinar>0">{{benf.mntDinar}} </div>
+          <div *ngIf="benf.mntDinar==0">Montant n'est pas disponible <br> en Dinar Tunisien</div></td>
+          <td>{{benf.statut}}</td>
+
+
+
+
+          
+          <td *ngIf="closed" >
+            <button type="button" class="update ml-8px" data-toggle="modal" data-target="#modal-update" (click)="getOne(benf)">
+             <i class="fa fa-edit"></i>
+           </button>
+           &nbsp;
+                        <button class="delete" data-toggle="modal" data-target="#modal-delete" (click)="deleteB(benf)">
+             X
+             </button>        </tr>
+      </tbody>
+    </table>
+  </div>
+  <!-- /.box-body -->
+</div>
+
+<div class="modal fade" id="modal-add">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Ajouter un nouveau Bénéficiaire</h4>
+      </div>
+      <div class="modal-body">
+        <form #beneficiaire_add_form="ngForm">
+       <!--     <div class="form-group">
+                <label for="name">ID-Pensionnaire <span class="text-danger">*</span></label>
+                <input type="text" #idP="ngModel" [(ngModel)]="beneficiaire.idP"  class="form-control" [class.is-invalid]="idP.touched && idP.invalid" name="idP" id="idP"  placeholder="Entrer idP" required="true">
+                <small class="text-danger" [class.d-none]="nom.untouched || idP.valid">ID-Pensionnaire est obligatoire</small>
+              </div>-->
+
+              
+          <div class="form-group">
+            <label for="name">Prenom <span class="text-danger">*</span></label>
+            <input type="text" #prenom="ngModel" [(ngModel)]="beneficiaire.prenom" class="form-control" [class.is-invalid]="prenom.touched && prenom.invalid" name="prenom" id="prenom"  placeholder="Entrer prenom" required="true">
+            <small class="text-danger" [class.d-none]="nom.untouched || prenom.valid">Prenom Bénéficiaire est obligatoire</small>
+          </div>
+          <div class="form-group">
+            <label for="name">Nom <span class="text-danger">*</span></label>
+            <input type="text" #nom="ngModel" [(ngModel)]="beneficiaire.nom" class="form-control" [class.is-invalid]="nom.touched && nom.invalid" name="nom" id="nom"  placeholder="Entrer nom" required="true">
+            <small class="text-danger" [class.d-none]="nom.untouched || nom.valid">Nom Bénéficiaire est obligatoire</small>
+          </div>
+  
+        <!--  <div class="form-group">
+              <label for="name">Montant <span class="text-danger">*</span></label>
+              <input type="number" #montantP="ngModel" [(ngModel)]="beneficiaire.montantP" name="montantP"  class="form-control" id="montantP" [class.is-invalid]="montantP.touched && montantP.invalid"   placeholder="Entrer Montant" required>
+              <small class="text-danger" [class.d-none]="montantP.untouched || montantP.valid">Montant est obligatoire</small>
+            </div>
+            <div class="form-group">
+              <label for="name">Commission <span class="text-danger">*</span></label>
+              <input type="number" #commission="ngModel" [(ngModel)]="beneficiaire.commission" name="commission"  class="form-control" id="commission" [class.is-invalid]="commission.touched && commission.invalid"   placeholder="Entrer Commission" required >
+              <small class="text-danger" [class.d-none]="commission.untouched || commission.valid">Commission est obligatoire</small>
+            </div>
+          -->
+  
+        
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Annuler</button>
+            <button type="button" class="btn btn-primary" (click)="add_bnf()" data-dismiss="modal" [disabled]="!beneficiaire_add_form.form.valid" >Ajouter Bénéficiaire</button>
+          </div>
+        </form>
+      </div>
+
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+
+<!--Modal update -->
+<div class="modal fade" id="modal-update">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Modifier Bénéficiaire</h4>
+      </div>
+      <div class="modal-body">
+        <form #beneficiaire_update_form="ngForm">
+      
+         
+  
+          <div class="form-group">
+              <label for="name">Montant <span class="text-danger">*</span></label>
+              <input type="number" #montantP="ngModel" [(ngModel)]="beneficiaire.montantP" name="montantP"  class="form-control" id="montantP" [class.is-invalid]="montantP.touched && montantP.invalid"   placeholder="Entrer Montant" required>
+              <small class="text-danger" [class.d-none]="montantP.untouched || montantP.valid">Montant est obligatoire</small>
+            </div>
+         
+  
+        
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default pull-left" data-dismiss="modal" (click)="annuler()">Annuler</button>
+            <button type="button" class="btn btn-primary" (click)="updateBnf()" data-dismiss="modal" [disabled]="!beneficiaire_update_form.form.valid" >Modifier Montant</button>
+          </div>
+        </form>
+      </div>
+
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<notifier-container></notifier-container>

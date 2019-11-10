@@ -1,0 +1,66 @@
+<div class="row">
+   <div class="col-sm-6">
+           <div class="card chart-card">
+              <div class="card-body">
+                <h4 style="text-align: center">Pourcentage des fonds par correspondant</h4>
+                 <canvas baseChart
+                 [data]="pieChartData"
+                 [labels]="pieChartLabels"
+                 [chartType]="pieChartType"
+                 [options]="pieChartOptions"
+                 [plugins]="pieChartPlugins"
+                 [colors]="pieChartColors"
+                 [legend]="pieChartLegend">
+                 </canvas>
+              </div>
+           </div>
+   </div>
+   <div class="col-sm-6">
+      <div class="card chart-card">
+         <div class="card-body">
+           <h4 style="text-align: center">Montant par Fonds et Désignation </h4>
+            <canvas baseChart
+            [datasets]="barChartData"
+            [labels]="barChartLabels"
+            [options]="barChartOptions"
+            [plugins]="barChartPlugins"
+            [legend]="barChartLegend"
+            [chartType]="barChartType">
+            </canvas>
+         </div>
+      </div>
+   </div>
+</div>
+
+
+<div class="row">
+      <div class="col-sm-6">
+            <div class="card chart-card">
+               <div class="card-body">
+                    <h4 style="text-align: center">Nombre de bénéficiares par Fonds</h4>
+                    <canvas baseChart
+                    [datasets]="barChartDataTwo"
+                    [labels]="barChartLabelsTwo"
+                    [options]="barChartOptionsTwo"
+                    [plugins]="barChartPluginsTwo"
+                    [legend]="barChartLegendTwo"
+                    [chartType]="barChartTypeTwo">
+                    </canvas>
+               </div>
+            </div>
+         </div>
+         
+   <div class="col-sm-6">
+      <div class="card chart-card">
+         <div class="card-body">
+              <h4 style="text-align: center">Statut des Fonds </h4>
+              <canvas baseChart
+              [data]="doughnutChartData"
+              [labels]="doughnutChartLabels"
+              [chartType]="doughnutChartType"
+              [colors]="donutColors">
+            </canvas>
+         </div>
+      </div>
+   </div>
+</div>

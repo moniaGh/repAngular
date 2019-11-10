@@ -1,0 +1,52 @@
+<div class="box">
+  <div class="box-header">
+    <h2 class="box-title">Bénéficiaires</h2>
+    <br>
+    <br>
+  </div>
+  <!-- /.box-header -->
+  <div class="box-body">
+    <table id="example2" class="table table-bordered table-hover">
+      <thead>
+       
+        <tr>
+          <th>ID</th>
+          <th>ID-P</th>
+          <th>Nom</th>
+          <th>Prénom</th>
+          <th>Montant</th>
+          <th>Commission Correspondant</th>
+          <th>Commission Interne</th>
+
+          <th>Montant NET </th>
+          <th>Montant En DINAR</th>
+          <th>Etat</th>
+          <th>Valider la transaction</th>
+          <th *ngIf="closed">Modifier/Supprimer</th>
+
+      </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let benf of beneficiaires ;let i = index">
+          <td>{{benf.idB}}</td>
+          <td>{{benf.pensionnaire.idP}}</td>
+          <td>{{benf.pensionnaire.nom}}</td>
+          <td>{{benf.pensionnaire.prenom}}</td>
+          <td>{{benf.montantP}}</td>
+          <td>{{benf.commissionC}}</td>
+          <td>{{benf.commissionI}}</td>   
+                 <td>{{benf.mntNet}}</td>
+          <td><div *ngIf="benf.mntDinar>0">{{benf.mntDinar}} </div>
+          <div *ngIf="benf.mntDinar==0">Montant n'est pas disponible <br> en Dinar Tunisien</div></td>
+          <td>{{benf.statut}}</td>
+          <td><button  *ngIf="!(benf.statut=='validé')" (click)="valider(benf)"><i class="fa fa-check"></i></button>
+          <button *ngIf="(benf.statut=='validé')"><i class="fa fa-print"></i></button></td>
+      </tbody>
+    </table>
+  </div>
+  <!-- /.box-body -->
+</div>
+
+
+
+<notifier-container></notifier-container>
